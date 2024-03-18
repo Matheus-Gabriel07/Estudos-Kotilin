@@ -1,44 +1,40 @@
-package com.example.cartaoaniversario
+package com.example.artigo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cartaoaniversario.ui.theme.CartaoAniversarioTheme
+import com.example.artigo.ui.theme.ArtigoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CartaoAniversarioTheme{
+            ArtigoTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ImagemCartao(
-                        mensagem = stringResource(R.string.texto_feliz_aniversario),
-                        remetente = stringResource(R.string.texto_assinatura)
-                    )
+                    ComporArtigo()
                 }
             }
         }
@@ -46,59 +42,54 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Texto(mensagem: String, remetente: String, modifier: Modifier = Modifier) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-    ) {
-        Text(
-            text = mensagem,
-            fontSize = 70.sp,
-            lineHeight = 116.sp,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier.background(color = Color(0,0,155,75))
-        )
-        Text(
-            text = remetente,
-            fontSize = 36.sp,
-            modifier = Modifier
-                .padding(
-                    start = 16.dp,
-                    top = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp
-                )
-                .align(alignment = Alignment.End),
-            color = Color.DarkGray
-        )
-    }
+fun ComporArtigo(){
+    CartaoArtigo(
+        titulo = stringResource(R.string.titulo_artigo),
+        descricao = stringResource(R.string.descricao_artigo),
+        corpo = stringResource(R.string.corpo_artigo),
+        imagem = painterResource(R.drawable.imagem_artigo)
+    )
 }
 
 @Composable
-fun ImagemCartao(mensagem: String, remetente: String, modifier: Modifier = Modifier){
-    val imagem = painterResource(R.drawable.androidparty)
-    Box (modifier){
+private fun CartaoArtigo(
+    titulo: String,
+    descricao: String,
+    corpo: String,
+    imagem: Painter,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier){
         Image(
             painter = imagem,
             contentDescription = null,
-            contentScale = ContentScale.Crop,
-            alpha = 0.75F
+            modifier = Modifier.height(100.dp).fillMaxWidth()
         )
-        Texto(
-            mensagem = mensagem,
-            remetente = remetente,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
+        Text(
+            text = titulo,
+            fontSize = 24.sp,
+            modifier = Modifier.padding(16.dp)
+        )
+        Text(
+            text = descricao,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.padding(
+                start = 16.dp,
+                end = 16.dp
+            )
+        )
+        Text(
+            text = corpo,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.padding(16.dp)
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BirthdayCardPreview() {
-    CartaoAniversarioTheme{
-        ImagemCartao(mensagem = stringResource(R.string.texto_feliz_aniversario), remetente = stringResource(R.string.texto_assinatura))
+fun GreetingPreview() {
+    ArtigoTheme {
+        ComporArtigo()
     }
 }
